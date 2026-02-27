@@ -4,9 +4,7 @@ from PyQt6.QtCore import pyqtSignal
 
 
 class ChatView(QWidget):
-    """视图组件，没有任何 API 相关的逻辑"""
-
-    # 定义信号：当用户要求发送消息时触发，携带 (用户文本, 系统提示词)
+    """视图组件，纯 UI 渲染"""
     send_requested = pyqtSignal(str, str)
 
     def __init__(self):
@@ -14,7 +12,7 @@ class ChatView(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle('MVC 架构本地聊天机器人')
+        self.setWindowTitle('本地大模型私人助教 - MVC 版')
         self.resize(600, 700)
         layout = QVBoxLayout()
 
@@ -22,7 +20,6 @@ class ChatView(QWidget):
         layout.addWidget(QLabel("全局系统提示词 (System Prompt):"))
         self.prompt_input = QTextEdit()
         self.prompt_input.setFixedHeight(80)
-        self.prompt_input.setPlaceholderText("例如：你是一个资深的架构师，请用最精简的代码回答。")
         layout.addWidget(self.prompt_input)
 
         # 对话展示区
@@ -46,15 +43,11 @@ class ChatView(QWidget):
         self.setLayout(layout)
 
     def _trigger_send(self):
-        """收集界面数据并发射信号，交给 Controller 去处理"""
         user_text = self.user_input.text().strip()
         system_prompt = self.prompt_input.toPlainText().strip()
         if user_text:
             self.send_requested.emit(user_text, system_prompt)
 
-    # ==========================================
-    # 供 Controller 调用的 UI 更新接口
-    # ==========================================
     def append_user_message(self, text):
         self.chat_display.append(f"<b>你:</b> {text}")
 
