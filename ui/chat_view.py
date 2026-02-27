@@ -12,7 +12,7 @@ class ChatView(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle('本地大模型私人助教 - MVC 版')
+        self.setWindowTitle('本地大模型私人助手')
         self.resize(600, 700)
         layout = QVBoxLayout()
 
