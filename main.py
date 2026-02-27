@@ -1,16 +1,34 @@
-# 这是一个示例 Python 脚本。
+import sys
+import os
+from dotenv import load_dotenv
+from PyQt6.QtWidgets import QApplication
 
-# 按 Shift+F10 执行或将其替换为您的代码。
-# 按 双击 Shift 在所有地方搜索类、文件、工具窗口、操作和设置。
+# 导入自己写的 MVC 模块
+from core.chat_model import ChatModel
+from ui.chat_view import ChatView
+from controllers.chat_controller import ChatController
 
 
-def print_hi(name):
-    # 在下面的代码行中使用断点来调试脚本。
-    print(f'Hi, {name}')  # 按 Ctrl+F8 切换断点。
+def main():
+    # 1. 加载 .env 文件中的环境变量
+    load_dotenv()
+    api_key = os.getenv("API_KEY")
+
+    if not api_key:
+        print("错误: 请在根目录下创建 .env 文件并填入 API_KEY")
+        sys.exit(1)
+
+    app = QApplication(sys.argv)
+
+    # 2. 实例化 MVC 组件
+    model = ChatModel(api_key=api_key)
+    view = ChatView()
+    controller = ChatController(model=model, view=view)
+
+    # 3. 显示界面并运行主循环
+    view.show()
+    sys.exit(app.exec())
 
 
-# 按装订区域中的绿色按钮以运行脚本。
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# 访问 https://www.jetbrains.com/help/pycharm/ 获取 PyCharm 帮助
+    main()
